@@ -6,8 +6,6 @@
 //
 import SwiftUI
 
-
-
 struct QuestionsModelView:View{
   
   let questionModel: QuestionsModel
@@ -22,8 +20,6 @@ struct QuestionsModelView:View{
   }
 }
 
-
-
 class QuestionsModel: Identifiable {
   
   init(question: String, check: Bool){
@@ -34,69 +30,74 @@ class QuestionsModel: Identifiable {
   var question: String
   var check: Bool
   let id = UUID()
-
 }
 
-
+class QuestionsData: ObservableObject{
+  @Published var boolArr = [QuestionsModel(question: "aaaa", check: false), QuestionsModel(question: "ffff", check: true)]
+  
+  func addQuestion(question: String){
+    boolArr.append(QuestionsModel(question: question, check: false))
+  }
+}
 
 struct MyView: View {
   
-  @State private var boolArr = [QuestionsModel(question: "aaaa", check: false), QuestionsModel(question: "ffff", check: true)]
-  
-@State var isRemoving = false
+  @StateObject var questionData: QuestionsData = QuestionsData()
   
      var body: some View {
-         NavigationView {
+       NavigationView{
+       VStack{
              VStack {
-               if isRemoving == false {
-
-             List($boolArr) { $questionModel in
-               VStack{
-                 Toggle(isOn: $questionModel.check) {
-                         Text(questionModel.question)
-                 }.toggleStyle(CheckboxStyle())}
-             }}
-               else{
-                 List($boolArr) { $questionModel in
-                   VStack{
-                     Toggle(isOn: $questionModel.check) {
-                       if questionModel.check == true{
-                         Text(questionModel.question).foregroundColor(Color.red)}
-                       else{Text(questionModel.question).foregroundColor(Color.green)}
-                     }.toggleStyle(CheckboxStyleDelete())
-                     
-                   }}
-               }
-               
-               
+               List{
+               ForEach($questionData.boolArr) { $firstObject in
+                 Toggle(isOn: $firstObject.check) {
+                   Text(firstObject.question)
+                                 }.toggleStyle(CheckboxStyle())}
+               }}.navigationTitle("Questions")
+         Spacer()
+         HStack{
+             NavigationLink(destination:  AddNewQuestion()) {
+               Text("Add")
              }
-             .navigationBarItems(leading:
-                                  Button(action: { self.boolArr.append(QuestionsModel(question: "bbb", check: .random())) })
-                 { Text("Add") }
-                 , trailing:
-                 Button(action: {
-               isRemoving = true
-               for index in boolArr {
-               }
-             })
-                 { Text("Remove") })
+         Spacer()
+         Button("Remove") {
          }
+         }}.environmentObject(questionData)
+       }
      }
 }
+
+struct AddNewQuestion: View {
   
+  @State var name: String = ""
+  @EnvironmentObject var questionData: QuestionsData
   
+  var body: some View {
+    VStack{
+      Spacer()
+      List{
+        TextField("Type the question here", text: $name)
+        NavigationLink(destination:  MyView()) {
+          Button("Save") {
+            questionData.addQuestion(question: name)
+            print(name)
+          }
+        }}
+      Spacer()
+    }
+  }
+}
   
-//
-//  struct CheckBoxView_Previews: PreviewProvider {
-//    struct CheckBoxViewHolder: View {
-//      @State var checked = false
-//
-//      var body: some View {
-//        MyView(id: <#ObjectIdentifier#>)
-//      }
-//    }
+  struct CheckBoxView_Previews: PreviewProvider {
+    struct CheckBoxViewHolder: View {
+      @State var checked = false
+
+      var body: some View {
+        MyView()
+      }
+    }
     
-//    static var previews: some View {
-//      MyView()
-//    }
-//  }
+    static var previews: some View {
+      MyView()
+    }
+  }
