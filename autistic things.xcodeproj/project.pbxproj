@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1586F07928C39E5F00FBB0E3 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1586F07828C39E5F00FBB0E3 /* Styles.swift */; };
+		1586F07B28C8E94F00FBB0E3 /* QuestionsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1586F07A28C8E94F00FBB0E3 /* QuestionsModels.swift */; };
+		1586F07E28C8EA5B00FBB0E3 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1586F07D28C8EA5B00FBB0E3 /* RatingView.swift */; };
+		1586F08028C8EAAC00FBB0E3 /* AddQuestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1586F07F28C8EAAC00FBB0E3 /* AddQuestions.swift */; };
+		1586F08228C8EBB900FBB0E3 /* QuestionsHomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1586F08128C8EBB900FBB0E3 /* QuestionsHomePage.swift */; };
 		15D26428286B716000612F47 /* autistic_thingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D26427286B716000612F47 /* autistic_thingsApp.swift */; };
-		15D2642A286B716000612F47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D26429286B716000612F47 /* ContentView.swift */; };
 		15D2642C286B716400612F47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15D2642B286B716400612F47 /* Assets.xcassets */; };
 		15D2642F286B716400612F47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15D2642E286B716400612F47 /* Preview Assets.xcassets */; };
 		15D26439286B716400612F47 /* autistic_thingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D26438286B716400612F47 /* autistic_thingsTests.swift */; };
@@ -36,9 +39,12 @@
 
 /* Begin PBXFileReference section */
 		1586F07828C39E5F00FBB0E3 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		1586F07A28C8E94F00FBB0E3 /* QuestionsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsModels.swift; sourceTree = "<group>"; };
+		1586F07D28C8EA5B00FBB0E3 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		1586F07F28C8EAAC00FBB0E3 /* AddQuestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuestions.swift; sourceTree = "<group>"; };
+		1586F08128C8EBB900FBB0E3 /* QuestionsHomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsHomePage.swift; sourceTree = "<group>"; };
 		15D26424286B716000612F47 /* autistic things.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "autistic things.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15D26427286B716000612F47 /* autistic_thingsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = autistic_thingsApp.swift; sourceTree = "<group>"; };
-		15D26429286B716000612F47 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		15D2642B286B716400612F47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15D2642E286B716400612F47 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		15D26434286B716400612F47 /* autistic thingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "autistic thingsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +79,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1586F07C28C8EA1200FBB0E3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1586F08128C8EBB900FBB0E3 /* QuestionsHomePage.swift */,
+				1586F07D28C8EA5B00FBB0E3 /* RatingView.swift */,
+				1586F07F28C8EAAC00FBB0E3 /* AddQuestions.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		15D2641B286B716000612F47 = {
 			isa = PBXGroup;
 			children = (
@@ -96,8 +112,9 @@
 		15D26426286B716000612F47 /* autistic things */ = {
 			isa = PBXGroup;
 			children = (
+				1586F07C28C8EA1200FBB0E3 /* Views */,
 				15D26427286B716000612F47 /* autistic_thingsApp.swift */,
-				15D26429286B716000612F47 /* ContentView.swift */,
+				1586F07A28C8E94F00FBB0E3 /* QuestionsModels.swift */,
 				1586F07828C39E5F00FBB0E3 /* Styles.swift */,
 				15D2642B286B716400612F47 /* Assets.xcassets */,
 				15D2642D286B716400612F47 /* Preview Content */,
@@ -261,8 +278,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1586F07928C39E5F00FBB0E3 /* Styles.swift in Sources */,
-				15D2642A286B716000612F47 /* ContentView.swift in Sources */,
+				1586F08228C8EBB900FBB0E3 /* QuestionsHomePage.swift in Sources */,
 				15D26428286B716000612F47 /* autistic_thingsApp.swift in Sources */,
+				1586F07E28C8EA5B00FBB0E3 /* RatingView.swift in Sources */,
+				1586F07B28C8E94F00FBB0E3 /* QuestionsModels.swift in Sources */,
+				1586F08028C8EAAC00FBB0E3 /* AddQuestions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

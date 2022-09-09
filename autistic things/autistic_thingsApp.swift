@@ -11,7 +11,7 @@ import SwiftUI
 struct autistic_thingsApp: App {
     var body: some Scene {
         WindowGroup {
-          MyView()
+          QuestionsHomePage()
         }
     }
 }
