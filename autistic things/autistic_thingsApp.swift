@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct autistic_thingsApp: App {
-    var body: some Scene {
-        WindowGroup {
-          QuestionsHomePage()
-        }
+  var body: some Scene {
+    WindowGroup {
+      HomePage()
     }
+  }
 }
+

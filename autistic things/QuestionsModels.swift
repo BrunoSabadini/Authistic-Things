@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-class CheckQuestionModel: Identifiable {
+class CheckQuestionModel: Identifiable, Codable {
   
   init(question: String, check: Bool){
     self.question = question
@@ -18,7 +18,7 @@ class CheckQuestionModel: Identifiable {
   
   var question: String
   var check: Bool
-  let id = UUID()
+  var id = UUID()
 }
 
 class RatingQuestionModel: Identifiable, Codable {
@@ -35,16 +35,40 @@ class RatingQuestionModel: Identifiable, Codable {
 
 class QuestionsData: ObservableObject{
   
-  @Published var checkQuestions = [CheckQuestionModel(question: "Seu dia foi produtivo?", check: false), CheckQuestionModel(question: "O dia de hoje foi melhor do que o de ontem?", check: false)]
-  
-  @Published var rateQuestions =  [RatingQuestionModel(question: "Classifique sua felicidade neste momento", rate: 0)]
+  @AppStorage("check_questions") var ratingQuestionModel : [RatingQuestionModel] = []
+  @AppStorage("category_questions") var checkQuestionModel : [CheckQuestionModel] = []
   
 
   func deleteCheckQuestion(at offsets: IndexSet) {
-    checkQuestions.remove(atOffsets: offsets)
+    checkQuestionModel.remove(atOffsets: offsets)
   }
   
   func deleteRatingQuestion(at offsets: IndexSet) {
-    rateQuestions.remove(atOffsets: offsets)
+    ratingQuestionModel.remove(atOffsets: offsets)
   }
+}
+
+
+extension Array: RawRepresentable where Element: Codable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8) else {
+            return nil
+        }
+        do {
+            let result = try JSONDecoder().decode([Element].self, from: data)
+            self = result
+        } catch {
+            print("Error: \(error)")
+            return nil
+        }
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
+    }
 }
