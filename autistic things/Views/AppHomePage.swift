@@ -8,32 +8,31 @@ struct HomePage: View {
 
   init(){
     let date = Date()
-    let format =  date.getFormattedDate(format: "yyyy-MM-dd")
+    let dateFormatted =  date.getFormattedDate(format: "yyyy-MM-dd")
     self.date = date
-    self.format = format
+    self.format = dateFormatted
   }
   
   var body: some View {
     NavigationView{
       VStack{
-        Text(format)
       HStack{
+        VStack{
         NavigationLink("Todays questions") {
-          QuestionsHomePage(date: format)
+          QuestionsHomePage()
+        }.padding(24)
+        NavigationLink("Configurations") {
+        }.padding(24)
+          NavigationLink("Correlations") {
+          ActivityView()
+          }.padding(24)
         }}
-      VStack{
-        ActivityView()
-      }
+        Spacer()
+        Text(format)
+
     }
     }
   }}
  
 
 
-extension Date {
-   func getFormattedDate(format: String) -> String {
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = format
-        return dateformat.string(from: self)
-    }
-}

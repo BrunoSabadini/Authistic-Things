@@ -9,62 +9,51 @@ import SwiftUI
 
 struct QuestionsHomePage: View {
   
-  var date: String
-  @StateObject var questionData: QuestionsData = QuestionsData()
-  
-  func isAnsweringToday(){
-    let dateInstance = Date()
-    let formatDate =  dateInstance.getFormattedDate(format: "yyyy-MM-dd")
-  }
-  
-  func storeTodaysQuestionsInAppStorage(){
-    
+  @Environment(\.managedObjectContext) var moc
+  @FetchRequest(sortDescriptors: []) var questionsStoredInCoreData: FetchedResults<Question>
+
+  func deleteBooks(at offsets: IndexSet) {
+    for offset in offsets {
+      let questions = questionsStoredInCoreData[offset]
+      moc.delete(questions)
+      try? moc.save()
+    }
   }
   
   var body: some View {
     NavigationView{
       VStack{
-          VStack{
-            Text(date)
-            List{
-              Section(header: Text("Check")) {
-                ForEach($questionData.checkQuestionModel) { $eachObject in
-                  Toggle(eachObject.question, isOn: $eachObject.check).toggleStyle(CheckboxStyle())}.onDelete(perform: questionData.deleteCheckQuestion)
-              }
-              Section(header: Text("Rate")) {
-                ForEach($questionData.ratingQuestionModel) { $eachObject in
-                  Text(eachObject.question).listRowSeparator(.hidden)
-                  StarRating(rate: $eachObject.rate)
-                }
-                .onDelete(perform: questionData.deleteRatingQuestion)
-              }
-            }
+        VStack{
+          List{
+            Section(header: Text("Check")) {
+              ForEach(questionsStoredInCoreData) { eachObject in
+                Text(eachObject.question ?? "Unknown")
+              }.onDelete(perform: deleteBooks)}
           }
-          .navigationTitle("Questions")
+            .navigationTitle("Questions")
           Spacer()
           HStack{
             NavigationLink("Add") {
-              AddNewQuestion().environmentObject(questionData)
+              AddNewQuestion()
             }
             Button("Save") {
             }
-          }
         }
-      }.onAppear(perform: isAnsweringToday)
+      }
     }
-  }
+    }}}
 
 struct CheckBoxView_Previews: PreviewProvider {
   struct CheckBoxViewHolder: View {
     @State var checked = false
     
     var body: some View {
-      QuestionsHomePage(date: "")
+      QuestionsHomePage()
     }
   }
   
   static var previews: some View {
-    QuestionsHomePage(date: "")
+    QuestionsHomePage()
     AddNewQuestion()
   }
 }

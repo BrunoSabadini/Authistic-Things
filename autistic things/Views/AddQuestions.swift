@@ -9,34 +9,31 @@ import SwiftUI
 
 struct AddNewQuestion: View {
   
+  @Environment(\.managedObjectContext) var moc
+  @FetchRequest(sortDescriptors: []) var questionsStoredInCoreData: FetchedResults<Question>
+
+  
+  
   @State var checkQuestionTextField: String = ""
   @State var rateQuestionTextField: String = ""
-  @EnvironmentObject var questionData: QuestionsData
   @Environment(\.dismiss) var dismiss
   
   
-  func checkSaveButton(){
-    if checkQuestionTextField.count > 0{
-      if questionData.checkQuestionModel.count > 0 {
-        var storePreviousValueFromAppStorage: [CheckQuestionModel] = questionData.checkQuestionModel
-        storePreviousValueFromAppStorage.append(CheckQuestionModel(question: checkQuestionTextField, check: false))
-        questionData.checkQuestionModel.append(storePreviousValueFromAppStorage.last!)}
-      else {
-        questionData.checkQuestionModel.append(CheckQuestionModel(question: checkQuestionTextField, check: false))
-      }
-    }
-    dismiss()
-  }
   
-  func rateSaveButton(){
-    if rateQuestionTextField.count > 0{
-      if questionData.ratingQuestionModel.count > 0 {
-        var storePreviousValueFromAppStorage: [RatingQuestionModel] = questionData.ratingQuestionModel
-        storePreviousValueFromAppStorage.append(RatingQuestionModel(question: rateQuestionTextField, rate: 0))
-        questionData.ratingQuestionModel.append(storePreviousValueFromAppStorage.last!)}
-      else {
-        questionData.ratingQuestionModel.append(RatingQuestionModel(question: rateQuestionTextField, rate: 0))}
+  var checkQuestionModelMocList:[CheckQuestionModel] = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
+  
+  
+  func testStudents(){
+
+    for element in checkQuestionModelMocList {
+    
+      var saveElement = Question(context: moc)
+      saveElement.check = element.check
+      saveElement.question = element.question
+      saveElement.id = element.id
     }
+    
+    try? moc.save()
     dismiss()
   }
   
@@ -47,14 +44,13 @@ struct AddNewQuestion: View {
         Text("Check Question")
         TextField("Type the question here", text: $checkQuestionTextField)
         Button("Save") {
-          checkSaveButton()
+          testStudents()
         }
       }
       Spacer().frame(height: 50)
       Text("Rating Question")
       TextField("Type the question here", text: $rateQuestionTextField)
       Button("Save") {
-        rateSaveButton()
       }
     }
     Spacer()
