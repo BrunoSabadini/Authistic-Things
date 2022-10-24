@@ -18,8 +18,8 @@ class CheckQuestionModel: Identifiable, Codable {
     self.check = check
   }
   
-  var question: String
-  var check: Bool
+ var question: String
+var check: Bool
   var id = UUID()
 }
 

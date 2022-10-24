@@ -7,13 +7,18 @@
 
 import SwiftUI
 
+class CheckQuestionStore: ObservableObject {
+  @Published var checkQuestionModelMocList = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
+  static let shared = CheckQuestionStore()
+  
 
+}
 
 struct QuestionsHomePage: View {
   
   @Environment(\.managedObjectContext) var moc
   @FetchRequest(sortDescriptors: []) var questionsStoredInCoreData: FetchedResults<Question>
-  @StateObject var checkQuestionModelMocList:[CheckQuestionModel] = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
+  @ObservedObject var store = CheckQuestionStore.shared
 
   
   func deleteBooks(at offsets: IndexSet) {
@@ -25,7 +30,7 @@ struct QuestionsHomePage: View {
   }
   
   func loadPersistentStorageData(){
-    for element in checkQuestionModelMocList {
+    for element in store.checkQuestionModelMocList {
       let saveElement = Question(context: moc)
       saveElement.check = element.check
       saveElement.question = element.question
@@ -40,8 +45,8 @@ struct QuestionsHomePage: View {
         VStack{
           List{
             Section(header: Text("Check")) {
-              ForEach(checkQuestionModelMocList) { eachObject in
-                Toggle(isOn: $eachObject.check, label: "aaaaaa")
+              ForEach($store.checkQuestionModelMocList) { $element in
+                Toggle( element.question,isOn: $element.check).toggleStyle(CheckboxStyle())
               }.onDelete(perform: deleteBooks)}
           }
             .navigationTitle("Questions")
@@ -53,7 +58,7 @@ struct QuestionsHomePage: View {
             Button("Save") {
             }
         }
-      }
+        }
     }
     }}}
 
