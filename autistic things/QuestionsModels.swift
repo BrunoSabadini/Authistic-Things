@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 
+
+
 class CheckQuestionModel: Identifiable, Codable {
   
   init(question: String, check: Bool){

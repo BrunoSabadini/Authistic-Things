@@ -18,24 +18,7 @@ struct AddNewQuestion: View {
   @State var rateQuestionTextField: String = ""
   @Environment(\.dismiss) var dismiss
   
-  
-  
-  var checkQuestionModelMocList:[CheckQuestionModel] = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
-  
-  
-  func testStudents(){
 
-    for element in checkQuestionModelMocList {
-    
-      var saveElement = Question(context: moc)
-      saveElement.check = element.check
-      saveElement.question = element.question
-      saveElement.id = element.id
-    }
-    
-    try? moc.save()
-    dismiss()
-  }
   
   var body: some View {
     LazyVStack{
@@ -44,7 +27,6 @@ struct AddNewQuestion: View {
         Text("Check Question")
         TextField("Type the question here", text: $checkQuestionTextField)
         Button("Save") {
-          testStudents()
         }
       }
       Spacer().frame(height: 50)

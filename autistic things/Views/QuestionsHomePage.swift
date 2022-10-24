@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+
+
 struct QuestionsHomePage: View {
   
   @Environment(\.managedObjectContext) var moc
   @FetchRequest(sortDescriptors: []) var questionsStoredInCoreData: FetchedResults<Question>
+  @StateObject var checkQuestionModelMocList:[CheckQuestionModel] = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
 
+  
   func deleteBooks(at offsets: IndexSet) {
     for offset in offsets {
       let questions = questionsStoredInCoreData[offset]
@@ -20,14 +24,24 @@ struct QuestionsHomePage: View {
     }
   }
   
+  func loadPersistentStorageData(){
+    for element in checkQuestionModelMocList {
+      let saveElement = Question(context: moc)
+      saveElement.check = element.check
+      saveElement.question = element.question
+      saveElement.id = element.id
+    }
+    try? moc.save()
+  }
+  
   var body: some View {
     NavigationView{
       VStack{
         VStack{
           List{
             Section(header: Text("Check")) {
-              ForEach(questionsStoredInCoreData) { eachObject in
-                Text(eachObject.question ?? "Unknown")
+              ForEach(checkQuestionModelMocList) { eachObject in
+                Toggle(isOn: $eachObject.check, label: "aaaaaa")
               }.onDelete(perform: deleteBooks)}
           }
             .navigationTitle("Questions")
