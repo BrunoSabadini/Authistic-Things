@@ -10,16 +10,14 @@ import SwiftUI
 class CheckQuestionStore: ObservableObject {
   static let shared = CheckQuestionStore()
   @Published var checkQuestionModelMocList = [CheckQuestionModel(question: "aaa", check: true),CheckQuestionModel(question: "bbb", check: false)]
-  
- 
 }
 
-struct QuestionsHomePage: View {
+
+class QuestionsPageViewModel:ObservableObject {
   
-  @Environment(\.managedObjectContext) var moc
   @FetchRequest(sortDescriptors: []) var questionsStoredInCoreData: FetchedResults<Question>
+  @Environment(\.managedObjectContext) var moc
   @ObservedObject var store = CheckQuestionStore.shared
-  
   
   func deleteBooks(at offsets: IndexSet) {
     for offset in offsets {
@@ -29,8 +27,9 @@ struct QuestionsHomePage: View {
     }
   }
   
+  
   func loadPersistentStorageData(){
-
+    
     for element in store.checkQuestionModelMocList {
       let saveElement = Question(context: moc)
       saveElement.check = element.check
@@ -40,6 +39,11 @@ struct QuestionsHomePage: View {
     
     try? moc.save()
   }
+}
+
+struct QuestionsPage: View {
+  
+  @StateObject private var questionPageViewModel = QuestionsPageViewModel()
   
   var body: some View {
     NavigationView{
@@ -47,9 +51,9 @@ struct QuestionsHomePage: View {
         VStack{
           List{
             Section(header: Text("Check")) {
-              ForEach($store.checkQuestionModelMocList) { $element in
+              ForEach($questionPageViewModel.store.checkQuestionModelMocList) { $element in
                 Toggle( element.question,isOn: $element.check).toggleStyle(CheckboxStyle())
-              }.onDelete(perform: deleteBooks)}
+              }.onDelete(perform: questionPageViewModel.deleteBooks)}
           }
           .navigationTitle("Questions")
           Spacer()
@@ -62,19 +66,24 @@ struct QuestionsHomePage: View {
           }
         }
       }
-    }}}
+    }.background(      Color.init(hex: "063970")
+                        .ignoresSafeArea())
+  }
+}
+
+
 
 struct CheckBoxView_Previews: PreviewProvider {
   struct CheckBoxViewHolder: View {
     @State var checked = false
     
     var body: some View {
-      QuestionsHomePage()
+      QuestionsPage()
     }
   }
   
   static var previews: some View {
-    QuestionsHomePage()
+    QuestionsPage()
     AddNewQuestion()
   }
 }

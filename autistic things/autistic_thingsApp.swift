@@ -13,7 +13,7 @@ struct autistic_thingsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      HomePage()
+      ThreeLinesToBackArrow()
         .environment(\.managedObjectContext, dataController.container.viewContext)
     }
   }
